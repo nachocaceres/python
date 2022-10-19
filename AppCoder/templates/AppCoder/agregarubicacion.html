@@ -1,0 +1,16 @@
+{% extends "AppCoder/padre.html" %}
+
+{% load static %}
+
+{% block contenidoQueCambia %}
+
+<h1>AGREGAR UBICACION</h1>
+
+<form action="/AppCoder/agregarubicacion/" method="POST">{% csrf_token %}
+    <p>Nombre</p><input type="text" name="nombre_ubicacion">
+    <p>Ubicacion</p><input type="text" name="direccion_ubicacion">
+    <input type="submit" value="ENVIAR">
+
+</form>
+
+{% endblock %}

@@ -15,10 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from AppCoder.views import crear_familiar
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('crear-familiar/', crear_familiar),
     path('AppCoder/', include('AppCoder.urls'))
 ]

@@ -2,26 +2,54 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 from django.template import loader
-from AppCoder.models import Familia
+from AppCoder.forms import ClaseFormulario
+from AppCoder.models import Ubicacion, Profesora, Clase
 
 # Create your views here.
-def crear_familiar(request):
-    template = loader.get_template("template.html")
-
-    familiar1 = Familia(nombre = "Amparo", apellido = "Caceres", email = "amparocaceres@gmail.com")
-    familiar2 = Familia(nombre = "Silvia", apellido = "Roldan", email = "silviar@gmail.com")
-    familiar3 = Familia(nombre = "Mario", apellido = "Pardini", email = "mariop@gmail.com")
-    dict_context = {
-        "familiar1": familiar1.nombre,
-        "familiar2": familiar2.nombre,
-        "familiar3": familiar3.nombre,
-    }
-    
-    res = template.render(dict_context)
-    return HttpResponse(res)
-
 def mostrar_inicio(request):
     return render(request, "AppCoder/inicio.html")
 
 def mostrar_contacto(request):
     return render(request, "AppCoder/contacto.html")
+
+def mostrar_sobrenosotros(request):
+    return render(request, "AppCoder/sobrenosotros.html")
+
+def mostrar_formulario(request):
+    if request.method != "POST":
+        return render(request, "AppCoder/formulario.html")
+
+    clase = Clase(fecha=request.POST["fecha"], nombre=request.POST["nombre"] )
+    clase.save()
+    return render(request, "AppCoder/inicio.html")
+
+def mostrar_agregarprofesora(request):
+    if request.method != "POST":
+        return render(request, "AppCoder/agregarprofesora.html")
+
+    profesora = Profesora(nombre=request.POST["nombre_profesora"], apellido=request.POST["apellido_profesora"], email=request.POST["email_profesora"] )
+    profesora.save()
+    return render(request, "AppCoder/inicio.html")
+
+def mostrar_agregarubicacion(request):
+    if request.method != "POST":
+        return render(request, "AppCoder/agregarubicacion.html")
+
+    ubicacion = Ubicacion(nombre=request.POST["nombre_ubicacion"], direccion=request.POST["direccion_ubicacion"])
+    ubicacion.save()
+    return render(request, "AppCoder/inicio.html")
+
+def mostrar_formulario_2(request):
+    if request.method != "POST":
+        mi_formulario = ClaseFormulario
+    else:
+        mi_formulario = ClaseFormulario(request.POST)
+        if mi_formulario.is_valid():
+            informacion = mi_formulario.cleaned_data
+            clase = Clase(nombre=informacion["clase"], fecha=informacion["fecha"])
+            clase.save()
+            return render(request, "AppCoder/inicio.html")
+
+    contexto = {"formulario": mi_formulario}
+
+    return render(request, "AppCoder/formulario2.html", contexto)
