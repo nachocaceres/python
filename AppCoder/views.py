@@ -9,6 +9,23 @@ from AppCoder.models import Ubicacion, Profesora, Clase
 def mostrar_inicio(request):
     return render(request, "AppCoder/inicio.html")
 
+def mostrar_busqueda(request):
+    return render(request, "AppCoder/busqueda.html")
+
+def buscar(request):
+    if not request.GET["fecha"]:
+        return HttpResponse("No enviaste datos")
+    else:
+        fecha_a_buscar = request.GET["fecha"]
+        clases = Clase.objects.filter(fecha=fecha_a_buscar)
+
+        contexto = {
+            "fecha": fecha_a_buscar,
+            "clases": clases,
+        }
+
+        return render(request, "AppCoder/resultado_busqueda.html", contexto)
+
 def mostrar_contacto(request):
     return render(request, "AppCoder/contacto.html")
 

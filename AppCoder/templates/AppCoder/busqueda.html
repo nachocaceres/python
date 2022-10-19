@@ -1,0 +1,12 @@
+{% extends "AppCoder/padre.html" %}
+
+{% load static %}
+
+{% block contenidoQueCambia %}
+<h1>Buscar fecha de inicio de una clase</h1>
+<form action="/AppCoder/buscar" method="GET">
+    <p><input type="date" name="fecha" id="fecha"></p>
+    <input type="submit" value="BUSCAR">
+</form>
+
+{% endblock %}
